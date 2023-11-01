@@ -88,7 +88,7 @@ notSure = false;
 
 let num: number;
 
-num = notSure;
+// num = notSure;
 
 // нам не вдалося зберегти значення змінної notSure в змінну num.
 // Візьмемо для прикладу таку ситуацію: Ви отримуєте дані з API та не знаєте їхнього точного формату. У цьому випадку вам потрібно буде провести уточнення типів.
@@ -143,12 +143,12 @@ type Fish = {
 
 let pet: Dog | Fish;
 
-// pet = {
-//   legs: 4,
-//   bark: () => {
-//     console.log("Woof!");
-//   },
-// };
+pet = {
+  legs: 4,
+  bark: () => {
+    console.log("Woof!");
+  },
+};
 
 // У цьому прикладі змінна pet може бути або об'єктом типу Dog, або об'єктом типу Fish.
 
@@ -162,7 +162,7 @@ function isDog(pet: Dog | Fish): boolean {
 if (isDog(pet)) {
   pet.bark(); // OK, тепер TypeScript знає, що pet - це Dog
 } else {
-  pet.swim(); // TypeScript знає, що якщо pet не Dog, то це має бути Fish
+  //   pet.swim(); // TypeScript знає, що якщо pet не Dog, то це має бути Fish // тут помилка
 }
 
 // enum
@@ -224,7 +224,7 @@ function add(num1: number, num2: number): void {
   console.log(num1, num2);
 }
 
-console.log(add(1, 1));
+add(1, 1);
 
 // Типізація фкції з аргументом об’єктом
 type Person = {
@@ -380,10 +380,10 @@ type OneOrTwo = 1 | 2;
 let value: OneOrTwo;
 value = 1; // OK
 value = 2; // OK
-value = 3; // Error: Type '3' is not assignable to type 'OneOrTwo'.
+// value = 3; // Error: Type '3' is not assignable to type 'OneOrTwo'.
 
 type YesOrNo = "yes" | "no";
 let answer: YesOrNo;
 answer = "yes"; // OK
 answer = "no"; // OK
-answer = "maybe"; // Error: Type '"maybe"' is not assignable to type 'YesOrNo'.
+// answer = "maybe"; // Error: Type '"maybe"' is not assignable to type 'YesOrNo'.

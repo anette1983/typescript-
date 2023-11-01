@@ -49,7 +49,7 @@ let notSure = 4;
 notSure = "maybe a string instead";
 notSure = false;
 let num;
-num = notSure;
+// num = notSure;
 // нам не вдалося зберегти значення змінної notSure в змінну num.
 // Візьмемо для прикладу таку ситуацію: Ви отримуєте дані з API та не знаєте їхнього точного формату. У цьому випадку вам потрібно буде провести уточнення типів.
 function fetchUserData1() {
@@ -60,12 +60,12 @@ if (typeof userData === "string") {
     console.log(userData.toUpperCase()); // OK, тепер ми знаємо, що це рядок
 }
 let pet;
-// pet = {
-//   legs: 4,
-//   bark: () => {
-//     console.log("Woof!");
-//   },
-// };
+pet = {
+    legs: 4,
+    bark: () => {
+        console.log("Woof!");
+    },
+};
 // У цьому прикладі змінна pet може бути або об'єктом типу Dog, або об'єктом типу Fish.
 // оли ми працюємо зі змінною Union Type, ми можемо використовувати лише ті властивості та методи, які існують у всіх типів цього об'єднання. У прикладі вище ми не можемо викликати pet.bark(), якщо pet є типом Fish. Нам доведеться перевіряти, чи існує цей метод.
 // type guard function
@@ -77,7 +77,7 @@ if (isDog(pet)) {
     pet.bark(); // OK, тепер TypeScript знає, що pet - це Dog
 }
 else {
-    pet.swim(); // TypeScript знає, що якщо pet не Dog, то це має бути Fish
+    //   pet.swim(); // TypeScript знає, що якщо pet не Dog, то це має бути Fish // тут помилка
 }
 // enum
 var Sizes;
@@ -124,7 +124,7 @@ const status = 200 /* HttpCodes.OK */;
 function add(num1, num2) {
     console.log(num1, num2);
 }
-console.log(add(1, 1));
+add(1, 1);
 function greet(person) {
     console.log("Hello, " + person.firstName + " " + person.lastName);
 }
@@ -196,9 +196,8 @@ const ceo = {
 let value;
 value = 1; // OK
 value = 2; // OK
-value = 3; // Error: Type '3' is not assignable to type 'OneOrTwo'.
 let answer;
 answer = "yes"; // OK
 answer = "no"; // OK
-answer = "maybe"; // Error: Type '"maybe"' is not assignable to type 'YesOrNo'.
+// answer = "maybe"; // Error: Type '"maybe"' is not assignable to type 'YesOrNo'.
 //# sourceMappingURL=concatenation.js.map
