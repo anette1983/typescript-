@@ -172,7 +172,7 @@ enum Sizes {
   large = "large",
 }
 // Яке значення можна призначити елементу enum у TypeScript? тільки рядок і число
-
+// type size = "small" | "medium" | "large";
 const button: size = "large";
 const button2: Sizes = Sizes.large;
 

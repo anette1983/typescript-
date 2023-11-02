@@ -87,6 +87,7 @@ var Sizes;
     Sizes["large"] = "large";
 })(Sizes || (Sizes = {}));
 // Яке значення можна призначити елементу enum у TypeScript? тільки рядок і число
+// type size = "small" | "medium" | "large";
 const button = "large";
 const button2 = Sizes.large;
 // різниця в записі
@@ -199,5 +200,168 @@ value = 2; // OK
 let answer;
 answer = "yes"; // OK
 answer = "no"; // OK
-// answer = "maybe"; // Error: Type '"maybe"' is not assignable to type 'YesOrNo'.
+const getUserNames = (users) => {
+    return users.map((user) => user.name);
+};
+const users = [
+    { id: 1, name: "Alice" },
+    { id: 2, name: "Bob" },
+    { id: 3, name: "Charlie" },
+];
+let result = getUserNames(users);
+console.log(result); // ['Alice', 'Bob', 'Charlie']
+//
+// У цьому прикладі функція getUserNames приймає масив об'єктів типу User та повертає масив рядків.
+// *Тип void у TypeScript використовується для позначення відсутності будь-якого типу взагалі, і зазвичай використовується як тип функцій, що повертається, в якому функції не повертають значення.
+function logMessage(message) {
+    console.log(message);
+}
+logMessage("Hello, world!");
+function doSomething(callback) {
+    callback();
+}
+doSomething(() => {
+    console.log("Callback function!");
+});
+// *Never
+// Це коли функція ніколи не закінчується та нічого не повертає.
+// Функція, яка завжди викидає помилку
+function throwError(message) {
+    throw new Error(message);
+}
+// Функція з нескінченним циклом
+function infiniteLoop() {
+    while (true) { }
+}
+// Ми можемо підвищити гнучкість. Замість того, щоб обмежувати тип CallbackType, який приймає рівно два числові аргументи, можна допустити функції, які можуть приймати будь-яку кількість аргументів.
+// type CallbackType = (...nums: number[]) => number;
+// Функція, яка приймає два числа та функцію зворотного виклику, застосовує цю функцію до чисел та виводить результат
+function calc(param1, param2, callback) {
+    console.log("Result:", callback(param1, param2));
+}
+// Приклади використання calc з різними функціями зворотного виклику
+calc(1, 1, (num1, num2) => num1 + num2);
+calc(10, 5, (num1, num2) => num1 - num2);
+const user2 = {
+    id: 1,
+    name: "Alice",
+};
+const userWithCoords = {
+    id: 1,
+    name: "Alice",
+    coords: [10, 20],
+};
+// більш складний приклад
+var AnimalIds;
+(function (AnimalIds) {
+    AnimalIds["cat"] = "cat";
+    AnimalIds["dog"] = "dog";
+    AnimalIds["fish"] = "fish";
+})(AnimalIds || (AnimalIds = {}));
+// Створення об'єктів типу Animal
+let cat = {
+    meow: () => "Meow! I am a cat",
+};
+let dog = {
+    bark: () => "Woof! I am a dog",
+};
+let fish = {
+    swim: () => undefined,
+};
+function printDetails(obj) {
+    console.log(`Name: ${obj.name}`);
+    if ("privileges" in obj) {
+        console.log(`Privileges: ${obj.privileges.join(", ")}`);
+    }
+    if ("startDate" in obj) {
+        console.log(`Start Date: ${obj.startDate}`);
+    }
+}
+// оператор instanceof для роботи з класами, перевіряючи, чи є об'єкт екземпляром конкретного класу.
+class Car1 {
+    drive() {
+        console.log("Driving a car...");
+    }
+}
+class Truck {
+    drive() {
+        console.log("Driving a truck...");
+    }
+    loadCargo(amount) {
+        console.log(`Loading cargo: ${amount}`);
+    }
+}
+// Create your instances
+const carInstance = new Car1();
+const truckInstance = new Truck();
+// Function to use vehicle
+function useVehicle(vehicle) {
+    vehicle.drive();
+    if (vehicle instanceof Truck) {
+        vehicle.loadCargo(1000);
+    }
+}
+useVehicle(carInstance);
+useVehicle(truckInstance);
+function isEmployee(staff) {
+    console.log(staff); //name: 'Bob', startDate: Thu Nov 02 2023 21:58:31 GMT+0200 (за східноєвропейським стандартним часом)
+    console.log(staff.startDate !== undefined); //true
+    return staff.startDate !== undefined;
+}
+const staffMember = { name: "Bob", startDate: new Date() };
+if (isEmployee(staffMember)) {
+    console.log(`Welcome on board, ${staffMember.name}! Your start date is ${staffMember.startDate}`);
+}
+// *У цьому прикладі ми використали as, щоб привести staff до типу Employee і тим самим перевірити чи є в ньому startDate.
+// Який Type Guard ви використали б для перевірки наявності властивості в об'єкті?
+// in
+// Type Casting (або Type Conversion) використовується для перетворення об'єкта одного типу на об'єкт іншого типу.
+// TypeScript використовує два синтаксичні підходи для типового приведення: кутові дужки <> та оператор as.
+let someValue = "this is a string";
+let strLength1 = someValue.length;
+// or
+let strLength2 = someValue.length;
+// let strLength3: number = someValue.length;
+// У цьому прикладі ми маємо змінну someValue типу unknown, і ми хочемо обробити її як рядок. Ми знаємо, що це рядок, але TypeScript цього не знає. Тому ми використовуємо Type Casting для уточнення типу someValue. Якщо ми цього не зробимо, то отримаємо помилку, як у змінній strLength3.
+// роботи з HTML-елементами
+// const input = document.getElementById("inputEmail");
+// input.value = "test@test.ts"; //помилка
+// рішення:
+// const input = <HTMLInputElement>document.getElementById("inputEmail");
+// або краще
+const input = document.getElementById("inputEmail");
+const user4 = {
+    name: "Alex",
+    gender: "MAN",
+    country: "Ukraine",
+};
+let users6 = {};
+let user6 = {
+    id: "1",
+    name: "Alex",
+    email: "alex@example.com",
+};
+users6[user6.id] = user6;
+// У цьому прикладі ми визначили тип Users, який містить об'єкти типу User. Потім ми створили об'єкт users, який може містити невідому кількість користувачів, кожен з яких може бути доступний за його id.
+var DayOfWeek;
+(function (DayOfWeek) {
+    DayOfWeek[DayOfWeek["Monday"] = 0] = "Monday";
+    DayOfWeek[DayOfWeek["Tuesday"] = 1] = "Tuesday";
+    DayOfWeek[DayOfWeek["Wednesday"] = 2] = "Wednesday";
+    DayOfWeek[DayOfWeek["Thursday"] = 3] = "Thursday";
+    DayOfWeek[DayOfWeek["Friday"] = 4] = "Friday";
+    DayOfWeek[DayOfWeek["Saturday"] = 5] = "Saturday";
+    DayOfWeek[DayOfWeek["Sunday"] = 6] = "Sunday";
+})(DayOfWeek || (DayOfWeek = {}));
+function isWeekend(day) {
+    return day === DayOfWeek.Saturday || day === DayOfWeek.Sunday;
+}
+// Приклад використання:
+const today = DayOfWeek.Sunday;
+if (isWeekend(today)) {
+    console.log("Сьогодні вихідний.");
+}
+else {
+    console.log("Сьогодні робочий день.");
+}
 //# sourceMappingURL=concatenation.js.map
