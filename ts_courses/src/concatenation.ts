@@ -387,3 +387,395 @@ let answer: YesOrNo;
 answer = "yes"; // OK
 answer = "no"; // OK
 // answer = "maybe"; // Error: Type '"maybe"' is not assignable to type 'YesOrNo'.
+
+// return type - тип даних, які функція повретає під час виклику
+type User3 = {
+  id: number;
+  name: string;
+};
+
+const getUserNames = (users: User3[]): string[] => {
+  return users.map((user) => user.name);
+};
+
+const users: User3[] = [
+  { id: 1, name: "Alice" },
+  { id: 2, name: "Bob" },
+  { id: 3, name: "Charlie" },
+];
+
+let result = getUserNames(users);
+console.log(result); // ['Alice', 'Bob', 'Charlie']
+//
+// У цьому прикладі функція getUserNames приймає масив об'єктів типу User та повертає масив рядків.
+
+// *Тип void у TypeScript використовується для позначення відсутності будь-якого типу взагалі, і зазвичай використовується як тип функцій, що повертається, в якому функції не повертають значення.
+
+function logMessage(message: string): void {
+  console.log(message);
+}
+
+logMessage("Hello, world!");
+
+function doSomething(callback: () => void) {
+  callback();
+}
+
+doSomething(() => {
+  console.log("Callback function!");
+});
+
+// *Never
+
+// Це коли функція ніколи не закінчується та нічого не повертає.
+// Функція, яка завжди викидає помилку
+function throwError(message: string): never {
+  throw new Error(message);
+}
+
+// Функція з нескінченним циклом
+function infiniteLoop(): never {
+  while (true) {}
+}
+// Наприклад, listen в express, оскільки підключення до сервера є постійне і теж має тип never.
+
+// *Function Type
+
+// Ми можемо описати функцію як тип.
+// Визначення типу функції, який приймає два числа та повертає число
+type CallbackType = (num1: number, num2: number) => number;
+// Ми можемо підвищити гнучкість. Замість того, щоб обмежувати тип CallbackType, який приймає рівно два числові аргументи, можна допустити функції, які можуть приймати будь-яку кількість аргументів.
+
+// type CallbackType = (...nums: number[]) => number;
+
+// Функція, яка приймає два числа та функцію зворотного виклику, застосовує цю функцію до чисел та виводить результат
+function calc(param1: number, param2: number, callback: CallbackType): void {
+  console.log("Result:", callback(param1, param2));
+}
+
+// Приклади використання calc з різними функціями зворотного виклику
+calc(1, 1, (num1, num2) => num1 + num2);
+calc(10, 5, (num1, num2) => num1 - num2);
+
+// Custom Types - власні структури даних за доп ключового слова type
+type User5 = {
+  id: number;
+  name: string;
+};
+
+const user2: User5 = {
+  id: 1,
+  name: "Alice",
+};
+
+type Coordinate = [number, number]; //кортеж з двох чисел
+
+type UserWithCoords = {
+  id: number;
+  name: string;
+  coords: Coordinate; //використали цей тип у визначенні іншого типу, UserWithCoords.
+};
+
+const userWithCoords: UserWithCoords = {
+  id: 1,
+  name: "Alice",
+  coords: [10, 20],
+};
+
+// більш складний приклад
+enum AnimalIds {
+  cat = "cat",
+  dog = "dog",
+  fish = "fish",
+}
+
+type Animal = {
+  [AnimalIds.cat]: {
+    meow: () => string;
+  };
+  [AnimalIds.dog]: {
+    bark: () => string;
+  };
+  [AnimalIds.fish]: {
+    swim: () => undefined;
+  };
+};
+
+// Створення об'єктів типу Animal
+let cat: Animal[AnimalIds.cat] = {
+  meow: () => "Meow! I am a cat",
+};
+
+let dog: Animal[AnimalIds.dog] = {
+  bark: () => "Woof! I am a dog",
+};
+
+let fish: Animal[AnimalIds.fish] = {
+  swim: () => undefined,
+};
+
+// не поширений приклад
+
+// *Різниця між Type та Interface
+
+// interface Animal {
+//   name: string;
+// }
+
+// type Animal = {
+//   name: string;
+// };
+
+// Interface підтримує об'єднання через оголошення з тим самим ім'ям. Якщо ви визначите два interface з одним і тим же ім'ям, вони будуть "змерджені" в одне.
+// Якщо ми хочемо розширити один інтерфейс іншим, у яких різні імена, нам потрібно використовувати оператор extends:
+
+// interface Dog extends Animal {
+//  bark: string;
+// }
+
+// У випадку з типом нам довелося б використовувати intersection(&).
+// type AnimalName = {
+//   name: string;
+// };
+
+// type AnimalAge = {
+//   age: number;
+// };
+
+// type Animal = AnimalName & AnimalAge;
+
+// let dog: Animal = {
+//   name: 'Fido',
+//   age: 5,
+// };
+
+// Ми також можемо міксувати Interface та type, але результат нам доведеться зберегти як тип.
+// type Cat = {
+//   meow: () => string;
+// };
+
+// interface Dog {
+//   bark: () => string;
+// }
+
+// type DogOrCat = Dog | Cat;
+// type DogAndCat = Dog & Cat;
+
+// Інтерфейси переважно призначені для опису класів. Через це вони не можуть зберігати в собі примітивні значення, як це може робити Type, а також масиви та інші структури даних, які не є об'єктами. Ми просто не зможемо їх туди зберегти, оскільки за синтаксисом відразу йдуть фігурні дужки {}.
+
+// interface Animal {
+//   name: string;
+// }
+
+// interface Dog extends Animal {
+//   bark: string;
+// }
+
+// class MyDog implements Dog {
+//   name = 'Fido';
+//   bark = 'Woof!';
+// }
+
+// // Error: Property 'name' is missing in type 'OtherDog'
+// class OtherDog implements Dog {
+//   bark = 'Woof!';
+// }
+
+// *Type Guards
+
+// Type Guards у TypeScript – це потужні інструменти, що допомагають нам обробляти конфлікти у змішаних типах, таких як Union Types.
+
+// Для цього ми маємо набір інструментів:
+
+// typeof // була вище перевірка
+// in
+// instanceof
+// User-Defined Type Guards
+
+// in
+type Admin = {
+  name: string;
+  privileges: string[];
+};
+
+type Employee1 = {
+  name: string;
+  startDate: Date;
+};
+
+type AdminOrEmployee = Admin | Employee1;
+
+function printDetails(obj: AdminOrEmployee) {
+  console.log(`Name: ${obj.name}`);
+
+  if ("privileges" in obj) {
+    console.log(`Privileges: ${obj.privileges.join(", ")}`);
+  }
+
+  if ("startDate" in obj) {
+    console.log(`Start Date: ${obj.startDate}`);
+  }
+}
+
+// оператор instanceof для роботи з класами, перевіряючи, чи є об'єкт екземпляром конкретного класу.
+
+class Car1 {
+  drive() {
+    console.log("Driving a car...");
+  }
+}
+
+class Truck {
+  drive() {
+    console.log("Driving a truck...");
+  }
+
+  loadCargo(amount: number) {
+    console.log(`Loading cargo: ${amount}`);
+  }
+}
+
+// Define your type
+
+type Vehicle = Car1 | Truck;
+
+// Create your instances
+
+const carInstance = new Car1();
+const truckInstance = new Truck();
+
+// Function to use vehicle
+
+function useVehicle(vehicle: Vehicle) {
+  vehicle.drive();
+
+  if (vehicle instanceof Truck) {
+    vehicle.loadCargo(1000);
+  }
+}
+
+useVehicle(carInstance);
+useVehicle(truckInstance);
+// ----
+
+type Admin3 = {
+  name: string;
+  privileges: string[];
+};
+
+type Employee3 = {
+  name: string;
+  startDate: Date;
+};
+
+type Staff = Admin3 | Employee3;
+
+function isEmployee(staff: Staff): staff is Employee3 {
+  console.log(staff as Employee3); //name: 'Bob', startDate: Thu Nov 02 2023 21:58:31 GMT+0200 (за східноєвропейським стандартним часом)
+  console.log((staff as Employee3).startDate !== undefined); //true
+  return (staff as Employee3).startDate !== undefined;
+}
+
+const staffMember: Staff = { name: "Bob", startDate: new Date() };
+
+if (isEmployee(staffMember)) {
+  console.log(
+    `Welcome on board, ${staffMember.name}! Your start date is ${staffMember.startDate}`
+  );
+}
+
+// *У цьому прикладі ми використали as, щоб привести staff до типу Employee і тим самим перевірити чи є в ньому startDate.
+// Який Type Guard ви використали б для перевірки наявності властивості в об'єкті?
+
+// in
+
+// Type Casting (або Type Conversion) використовується для перетворення об'єкта одного типу на об'єкт іншого типу.
+// TypeScript використовує два синтаксичні підходи для типового приведення: кутові дужки <> та оператор as.
+
+let someValue: unknown = "this is a string";
+
+let strLength1: number = (<string>someValue).length;
+// or
+let strLength2: number = (someValue as string).length;
+
+// let strLength3: number = someValue.length;
+// У цьому прикладі ми маємо змінну someValue типу unknown, і ми хочемо обробити її як рядок. Ми знаємо, що це рядок, але TypeScript цього не знає. Тому ми використовуємо Type Casting для уточнення типу someValue. Якщо ми цього не зробимо, то отримаємо помилку, як у змінній strLength3.
+
+// роботи з HTML-елементами
+// const input = document.getElementById("inputEmail");
+
+// input.value = "test@test.ts"; //помилка
+
+// рішення:
+// const input = <HTMLInputElement>document.getElementById("inputEmail");
+// або краще
+const input = document.getElementById("inputEmail") as HTMLInputElement;
+// input.value = "test@test.ts";
+
+// можемо призначити пізніше
+// const input = document.getElementById('inputEmail');
+
+// if (input) {
+//   (input as HTMLInputElement).value = 'test@test.ts';
+// }
+
+// !Однак, коли використовується JSX (React), тільки оператор as можна використати для приведення типів
+
+// * Index Properties коли деякі поля невідомі
+
+type Person4 = {
+  name: string;
+  [x: string]: string;
+};
+
+const user4: Person4 = {
+  name: "Alex",
+  gender: "MAN",
+  country: "Ukraine",
+};
+// У цьому визначенні типу, prop: string вказує, що ключі мають бути рядками, а string після двокрапки вказує, що значення мають бути рядками.
+
+// Використання індексних властивостей дозволяє вам створювати словники або карти, де ключі та значення мають певний тип.
+type User6 = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+type Users = {
+  [id: string]: User6;
+};
+
+let users6: Users = {};
+
+let user6: User6 = {
+  id: "1",
+  name: "Alex",
+  email: "alex@example.com",
+};
+
+users6[user6.id] = user6;
+
+// У цьому прикладі ми визначили тип Users, який містить об'єкти типу User. Потім ми створили об'єкт users, який може містити невідому кількість користувачів, кожен з яких може бути доступний за його id.
+
+enum DayOfWeek {
+  Monday,
+  Tuesday,
+  Wednesday,
+  Thursday,
+  Friday,
+  Saturday,
+  Sunday,
+}
+
+function isWeekend(day: DayOfWeek): boolean {
+  return day === DayOfWeek.Saturday || day === DayOfWeek.Sunday;
+}
+
+// Приклад використання:
+const today = DayOfWeek.Sunday;
+if (isWeekend(today)) {
+  console.log("Сьогодні вихідний.");
+} else {
+  console.log("Сьогодні робочий день.");
+}
