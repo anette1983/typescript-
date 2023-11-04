@@ -118,9 +118,30 @@ const database = {
 };
 // Додаємо новий запис в базу даних, де ключ (ім'я міста) має тип string, а значення (населення) має тип number
 database.Lviv = 721301;
-// Для колекції даних, де значення і ключі ніколи не зміняться - їх типи
-// локалізація, бібліотеки (дні тижня)
-//* АНАЛОГ ЕНАМА, але на відміну від енаму можемо додавати динамічні значення!
+const translations = {
+    Mon: "Понеділок",
+    Tue: "Вівторок",
+    Wed: "Середа",
+    Thu: "Четверг",
+    Fri: "П'ятниця",
+    Sat: "Субота",
+    Sun: "Неділя",
+};
+// DayTranslations — це тип об'єкта, ключами якого є значення типу Day, а значеннями – рядки. Отже, ви отримуєте суворо типізований об'єкт перекладу, який гарантує, що кожен день тижня буде перекладено.
+// enum можна замість рекорд
+var UserRoles;
+(function (UserRoles) {
+    UserRoles["admin"] = "admin";
+    UserRoles["manager"] = "manager";
+    UserRoles["employee"] = "manager";
+})(UserRoles || (UserRoles = {}));
+const userRoleStatuses = {
+    [UserRoles.admin]: true,
+    [UserRoles.manager]: false,
+    // [UserRoles.employee]: true,
+};
+// Ми визначаємо тип Form, який є об'єднанням InitialFormType та об'єкта, що містить поле errors.
+// Keyof InitialFormType отримує всі ключі з InitialFormType (в цьому випадку, це name, email та password), і Record створює новий тип, в якому кожен із цих ключів відображається на масив рядків. Потім Partial робить кожну властивість цього нового типу необов'язковою.
 function getPromise() {
     return new Promise((resolve) => {
         resolve(["Text", 50]);
@@ -139,4 +160,49 @@ getPromise().then((data) => {
 // і є ще ретерн, якйи повертає сам проміс
 // тобто маємо подвійну типізацію - класу, коли запускається екземпляр і ретерну
 // !порішати задачі (є відповіді) в репо до уроку 2!!!
+// generic classes
+// У цьому прикладі клас "DataStorage" має узагальнений тип "T", який визначається під час створення екземпляра класу. В результаті ми отримуємо універсальний клас для зберігання даних, що може працювати з рядками, числами або будь-якими іншими типами, які ми визначимо.
+class DataStorage {
+    constructor() {
+        this.data = [];
+    }
+    addItem(item) {
+        this.data.push(item);
+    }
+    getItems() {
+        return [...this.data];
+    }
+}
+const textStorage = new DataStorage();
+textStorage.addItem("Hello");
+textStorage.addItem("World");
+console.log(textStorage.getItems()); // ['Hello', 'World']
+// textStorage.addItem(1); // Error: Argument of type 'number' is not assignable to parameter of type 'string'
+const numberStorage = new DataStorage();
+numberStorage.addItem(1);
+numberStorage.addItem(2);
+console.log(numberStorage.getItems()); // [1, 2]
+// numberStorage.addItem("TEXT"); // Error: Argument of type 'number' is not assignable to parameter of type 'number'
+// Це також корисно для створення класів, що працюють зі спеціалізованими типами. Наприклад, ми можемо визначити клас "KeyValuePair", який приймає два узагальнені типи: один для ключа та один для значення.
+class KeyValuePair {
+    constructor(key, value) {
+        this.key = key;
+        this.value = value;
+    }
+    getKey() {
+        return this.key;
+    }
+    getValue() {
+        return this.value;
+    }
+}
+const pair1 = new KeyValuePair("name", "Alice");
+console.log(pair1.getKey()); // 'name'
+console.log(pair1.getValue()); // 'Alice'
+const pair2 = new KeyValuePair(1, true);
+console.log(pair2.getKey()); // 1
+console.log(pair2.getValue()); // true
+export {};
+// Результат: [string, number, boolean]
+// дозволяє нам отримати доступ до типів параметрів функції у TypeScript, як ми це зробили в прикладі з ReturnType.
 //# sourceMappingURL=generics.js.map
