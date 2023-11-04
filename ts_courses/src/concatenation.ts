@@ -722,6 +722,8 @@ const input = document.getElementById("inputEmail") as HTMLInputElement;
 // !Однак, коли використовується JSX (React), тільки оператор as можна використати для приведення типів
 
 // * Index Properties коли деякі поля невідомі
+// коли можуть бути різні об'єкти з різн ключами, властивостями, але однакові по типізації
+//багато різних товарів в магазину - назва, кількість, ціна
 
 type Person4 = {
   name: string;
@@ -779,3 +781,59 @@ if (isWeekend(today)) {
 } else {
   console.log("Сьогодні робочий день.");
 }
+
+// індексовані
+// як типізувати схожі об'єкти
+// Варіанти типізації
+// 1 окремі типи для кож об'єкту (пгвторюваний код)
+// type Fruits = {
+//   apples: number;
+//   banana: number;
+//   orange: number;
+// };
+
+// type FrozenGoods = {
+//   iceCream: number;
+//   fish: number;
+//   berry: number;
+// };
+// 2
+
+type Goods = {
+  [key: string]: number;
+};
+// один тип для різних категорій товарів, якщо буде різна кількість ключів - теж буде працювати
+// *використовуємо, якщо всі об'єкті, хоч і різні, будуть одного типу
+
+const fruits: Goods = {
+  apples: 15,
+  banana: 30,
+  orange: 30,
+};
+
+const frozenGoods: Goods = {
+  iceCream: 25,
+  fish: 30,
+  berry: 10,
+};
+
+// задача
+// визначити інтефейс для об'єкта, де знач може бути або рядок або число
+
+type MixedType = {
+  [key: string]: number | string;
+};
+// типізували линамічний ключ - він завжди рядок, і значення на вибір
+
+const userInfo: MixedType = {
+  name: "Bob",
+  age: 23,
+  country: "Ukraine",
+};
+
+const bookDetails: MixedType = {
+  title: "Bible",
+  pageCount: 350,
+};
+
+// це можна використ з інпутом, де випадає список - об'єкт з назвою країни

@@ -364,4 +364,27 @@ if (isWeekend(today)) {
 else {
     console.log("Сьогодні робочий день.");
 }
+// один тип для різних категорій товарів, якщо буде різна кількість ключів - теж буде працювати
+// *використовуємо, якщо всі об'єкті, хоч і різні, будуть одного типу
+const fruits = {
+    apples: 15,
+    banana: 30,
+    orange: 30,
+};
+const frozenGoods = {
+    iceCream: 25,
+    fish: 30,
+    berry: 10,
+};
+// типізували линамічний ключ - він завжди рядок, і значення на вибір
+const userInfo = {
+    name: "Bob",
+    age: 23,
+    country: "Ukraine",
+};
+const bookDetails = {
+    title: "Bible",
+    pageCount: 350,
+};
+// це можна використ з інпутом, де випадає список - об'єкт з назвою країни
 //# sourceMappingURL=concatenation.js.map
