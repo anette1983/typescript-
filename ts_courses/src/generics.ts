@@ -74,7 +74,7 @@ function merge<T extends object, U extends object>(objA: T, objB: U) {
   return Object.assign(objA, objB);
 }
 
-// const merged = merge({ name: "Alisa" }, "TEXT"); тут помилка у текст тепер
+// const merged = merge({ name: "Alisa" }, "TEXT"); //тут помилка у текст тепер
 
 // merged.name;
 
@@ -197,7 +197,7 @@ const invalidPerson: PersonSummary = {
 };
 
 // --
-// Що робить наступний тип? 
+// Що робить наступний тип?
 type ErrorType = Partial<Record<keyof InitialFormType, string[]>>;
 
 // Створює тип, у якому всі властивості InitialFormType стають необов'язковими та їхніми значеннями є масиви рядків.
@@ -381,17 +381,85 @@ console.log(pair2.getValue()); // true
 
 // Таким чином, ми можемо використовувати один і той же клас, який буде працювати з різними типами.
 
-
 // * Parameters<T>
 
-
-
 // Витягує типи параметрів типу функції T. Вона повертає кортеж, що містить типи всіх параметрів функції T у тому порядку, в якому вони оголошені.
-
-
 
 type MyFunctionType = (a: string, b: number, c: boolean) => void;
 
 type MyParametersType = Parameters<MyFunctionType>;
 // Результат: [string, number, boolean]
 // дозволяє нам отримати доступ до типів параметрів функції у TypeScript, як ми це зробили в прикладі з ReturnType.
+
+/*
+  У вас є тип AllType. Існує функція compare, яка приймає два об'єкти. Ці об'єкти містять поля AllType. 
+  Ваше завдання – використовувати Pick та generics для вказівки, що поля цих об'єктів належать AllType.
+  Функція compare повинна повертати AllType.
+*/
+
+type AllType = {
+  name: string;
+  position: number;
+  color: string;
+  weight: number;
+};
+
+function compare<T extends AllType, U extends AllType>(
+  top: Pick<T, keyof AllType>,
+  bottom: Pick<U, keyof AllType>
+): AllType {
+  return {
+    name: top.name,
+    position: bottom.position,
+    color: top.color,
+    weight: bottom.weight,
+  };
+}
+
+// function compare (top, bottom): AllType {
+//   return {
+//     name: top.name,
+//     color: top.color,
+//     position: bottom.position,
+//     weight: bottom.weight,
+//   }
+// }
+const topObj = {
+  name: "Top Name",
+  position: 1,
+  color: "Red",
+  weight: 100,
+};
+
+const bottomObj = {
+  name: "Bottom Name",
+  position: 2,
+  color: "Blue",
+  weight: 200,
+};
+
+const result = compare(topObj, bottomObj);
+console.log(result);
+
+interface ComponentProps {
+  title: string;
+}
+
+class Component<T> {
+  constructor(public props: T) {}
+}
+
+class Page extends Component<ComponentProps> {
+  pageInfo() {
+    console.log(this.props.title);
+  }
+}
+const pageProps: ComponentProps = { title: "Sample Page" };
+const page = new Page(pageProps);
+page.pageInfo();
+
+
+
+
+
+

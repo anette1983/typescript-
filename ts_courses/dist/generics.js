@@ -46,7 +46,7 @@ getLength([1, 2, 3]);
 function merge(objA, objB) {
     return Object.assign(objA, objB);
 }
-// const merged = merge({ name: "Alisa" }, "TEXT"); тут помилка у текст тепер
+// const merged = merge({ name: "Alisa" }, "TEXT"); //тут помилка у текст тепер
 // merged.name;
 const student = {
     name: "John",
@@ -202,7 +202,48 @@ console.log(pair1.getValue()); // 'Alice'
 const pair2 = new KeyValuePair(1, true);
 console.log(pair2.getKey()); // 1
 console.log(pair2.getValue()); // true
+function compare(top, bottom) {
+    return {
+        name: top.name,
+        position: bottom.position,
+        color: top.color,
+        weight: bottom.weight,
+    };
+}
+// function compare (top, bottom): AllType {
+//   return {
+//     name: top.name,
+//     color: top.color,
+//     position: bottom.position,
+//     weight: bottom.weight,
+//   }
+// }
+const topObj = {
+    name: "Top Name",
+    position: 1,
+    color: "Red",
+    weight: 100,
+};
+const bottomObj = {
+    name: "Bottom Name",
+    position: 2,
+    color: "Blue",
+    weight: 200,
+};
+const result = compare(topObj, bottomObj);
+console.log(result);
+class Component {
+    constructor(props) {
+        this.props = props;
+    }
+}
+class Page extends Component {
+    pageInfo() {
+        console.log(this.props.title);
+    }
+}
+const pageProps = { title: "Sample Page" };
+const page = new Page(pageProps);
+page.pageInfo();
 export {};
-// Результат: [string, number, boolean]
-// дозволяє нам отримати доступ до типів параметрів функції у TypeScript, як ми це зробили в прикладі з ReturnType.
 //# sourceMappingURL=generics.js.map
